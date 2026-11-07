@@ -22,11 +22,15 @@ Primera versión del repositorio único de skills.
 
 Probado:
 
-- `claude plugin validate` sobre el marketplace y el plugin.
-- Instalación del marketplace y del plugin en Claude Code desde el repositorio
-  publicado, en un perfil temporal.
-- `instalar.sh` en un perfil temporal: skills en `~/.agents/skills/`,
-  servidor en `~/.cursor/mcp.json` y en Codex.
+- `claude plugin validate` del marketplace y del plugin, sin errores.
+- `instalar.sh` por `curl | bash` desde el repositorio publicado, en un perfil
+  temporal: marketplace y plugin en Claude Code (5 skills y el servidor),
+  skills en `~/.agents/skills/`, servidor fusionado en `~/.cursor/mcp.json`
+  sin borrar otros, y servidor en Codex.
+- `claude plugin marketplace add Damasco-Vzla/damasco-skills` sin llave SSH:
+  reintenta por HTTPS y funciona.
+- `codex plugin marketplace add Damasco-Vzla/damasco-skills` y
+  `codex plugin add dacuotas@damasco`.
 - `empaquetar.sh`: cinco zips con la carpeta de la skill en la raíz.
 
 Sin probar en esta versión: subida de los zips a claude.ai, importación en
