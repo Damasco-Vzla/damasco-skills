@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "dwh-dacuotas": {
+      "type": "http",
+      "url": "https://mambu-mirror.aplicacionesdamasco.com/mcp"
+    }
+  }
+}

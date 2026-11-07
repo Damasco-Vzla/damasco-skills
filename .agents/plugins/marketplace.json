@@ -1,0 +1,12 @@
+{
+  "name": "damasco",
+  "interface": { "displayName": "Damasco" },
+  "plugins": [
+    {
+      "name": "dacuotas",
+      "source": { "source": "local", "path": "./dacuotas" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}

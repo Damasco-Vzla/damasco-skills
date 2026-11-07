@@ -1,0 +1,29 @@
+name: revisar
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Manifiestos, frontmatter y contenido sensible
+        env:
+          PALABRAS_PROHIBIDAS: ${{ secrets.PALABRAS_PROHIBIDAS }}
+        run: bash comprobar.sh
+      - name: claude plugin validate
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude plugin validate .
+          claude plugin validate ./dacuotas
+      - name: Zips
+        run: bash empaquetar.sh

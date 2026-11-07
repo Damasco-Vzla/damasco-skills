@@ -1,0 +1,10 @@
+{
+  "name": "dacuotas",
+  "version": "1.0.0",
+  "description": "Skills y conexión al MCP del DWH de Da+Cuotas (Corporación Damasco). Sólo lectura.",
+  "author": { "name": "Corporación Damasco, Tecnología" },
+  "homepage": "https://github.com/Damasco-Vzla/damasco-skills",
+  "repository": "https://github.com/Damasco-Vzla/damasco-skills",
+  "license": "LicenseRef-Propietaria",
+  "keywords": ["damasco", "dacuotas", "mcp", "mambu", "sap"]
+}

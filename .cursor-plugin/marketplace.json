@@ -1,0 +1,15 @@
+{
+  "name": "damasco",
+  "owner": { "name": "Corporación Damasco, Tecnología" },
+  "metadata": {
+    "description": "Skills y conexión al MCP del DWH de Da+Cuotas.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "dacuotas",
+      "source": "./dacuotas",
+      "description": "Skills y MCP del DWH de Da+Cuotas"
+    }
+  ]
+}

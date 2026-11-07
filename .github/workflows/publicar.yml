@@ -1,0 +1,35 @@
+name: publicar
+
+# Al publicar una Release (gh release create vX.Y.Z), valida y adjunta los zips
+# por skill. Si ya estaban adjuntos, los sustituye.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Validar
+        env:
+          PALABRAS_PROHIBIDAS: ${{ secrets.PALABRAS_PROHIBIDAS }}
+        run: |
+          bash comprobar.sh
+          npm install -g @anthropic-ai/claude-code
+          claude plugin validate .
+          claude plugin validate ./dacuotas
+      - name: Zips a la Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          bash empaquetar.sh
+          gh release upload "${{ github.event.release.tag_name }}" dist/*.zip --clobber

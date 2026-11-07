@@ -1,0 +1,26 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "dacuotas",
+  "version": "1.0.0",
+  "description": "Skills y conexión al MCP del DWH de Da+Cuotas: crédito, app, compras, call center y contabilidad de SAP. Sólo lectura, cada cifra con fuente y corte.",
+  "author": { "name": "Corporación Damasco, Tecnología" },
+  "license": "LicenseRef-Propietaria",
+  "keywords": ["damasco", "dacuotas", "mcp", "mambu", "sap"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Da+Cuotas",
+        "shortDescription": "Datos de Da+Cuotas con fuente y corte, sólo lectura",
+        "developerName": "Corporación Damasco",
+        "category": "Productivity",
+        "capabilities": ["Read"],
+        "brandColor": "#C8102E",
+        "defaultPrompt": [
+          "¿Cómo vamos hoy?",
+          "Resultado del mes por rubro de una sociedad",
+          "Convierte esta consulta en un reporte del Backoffice"
+        ]
+      }
+    }
+  }
+}
