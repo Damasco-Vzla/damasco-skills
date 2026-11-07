@@ -19,7 +19,14 @@ de este repositorio. Aquí no se publican usuarios ni roles de personas.
 ## Instalar
 
 Un comando (macOS o Linux, sin sudo). Detecta Claude Code, Codex y Cursor y
-configura lo que encuentre:
+configura lo que encuentre. Requiere Bash y, para fusionar la configuración
+de Cursor, Python 3. Conserva las skills previas en
+`~/.agents/skills/.damasco-backups` y las configuraciones de Cursor en copias
+`.bak.*` únicas. Revisa el script antes de ejecutarlo:
+
+Si ya hay un servidor con el mismo nombre pero otra URL o un transporte
+incompatible, lo conserva y avisa para revisión manual. No traslada credenciales
+de una conexión a otra.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Damasco-Vzla/damasco-skills/main/instalar.sh | bash
@@ -46,13 +53,23 @@ Por cliente, a mano:
 
 1. Conecta el servidor e inicia sesión: usuario, clave y código MFA.
 2. Primera pregunta sugerida: «¿Cómo vamos hoy?». Dispara la skill
-   `como-vamos`, que empieza por `listar_metricas` y `analisis_vigente`.
-3. Cada respuesta trae siempre:
+   `como-vamos`, que empieza por `listar_metricas` y comprueba las herramientas
+   expuestas en esa sesión. Usa `analisis_vigente` si está disponible o
+   `resumen` para crédito, aclarando el alcance.
+3. Cada respuesta debe conservar los metadatos que devuelva el servidor:
    - `fuente`: de qué copia sale.
-   - `corte_datos`: hasta cuándo llega el dato.
+   - Corte por fuente/objeto: `corte_datos`, `corte_fuente` o `cortes`, según la
+     respuesta. El corte principal no representa necesariamente SAP. La fecha
+     de copia no demuestra cobertura del período pedido.
    - `nota`: avisos de interpretación.
    - `sello`: `calculada` (cifra de apoyo), `certificada` (sólo si el servidor
      lo dice) o `escenario` (hubo tasa o supuesto propio).
+   - Período, moneda/unidad y filtros. Si un metadato no viene, no se inventa.
+
+El catálogo puede anunciar herramientas que un cliente todavía no expone o
+venir recortado. Esto no prueba que el dato no exista ni que esté denegado.
+Ver [diagnóstico](instalacion/diagnostico.md). El catálogo de métricas tampoco
+sustituye el diccionario de objetos para análisis ad hoc autorizado.
 
 ## Skills
 
@@ -89,6 +106,11 @@ y moneda.
 - Sumar SAP Productiva con Importadora, o gestiones del call center con abonos.
 - Publicar una cifra como oficial sin validarla con el área dueña.
 - Pedir datos de personas que no son el caso concreto.
+- Interpretar una fecha de copia reciente como prueba de datos actuales: en
+  Cashea u otras fuentes externas, comprobar histórico, archivo vigente y
+  cobertura antes de responder.
+- Dar por ejecutada una SQL redactada, por total unas filas recortadas o por
+  USD una moneda no verificada.
 
 ## Cuando se repite
 
@@ -103,6 +125,31 @@ Cada Release lleva la versión del paquete, la versión de la política de
 gobernanza del MCP que cumple, la fecha y qué se probó. Ver
 [CHANGELOG.md](CHANGELOG.md). Las skills subidas a claude.ai no se actualizan
 solas: con cada Release hay que volver a subir los zips.
+
+## Desarrollar y comprobar
+
+Python 3.10 o posterior para las herramientas de mantenimiento. Las pruebas
+usan hogares temporales y clientes simulados; no inician sesión ni consultan
+datos reales:
+
+```bash
+python3 -m pip install -r requirements-dev.txt
+bash comprobar.sh
+python3 -m unittest discover -s tests -v
+bash -n instalar.sh comprobar.sh empaquetar.sh
+bash empaquetar.sh
+```
+
+`comprobar.sh` valida YAML/JSON, coherencia de versiones, rutas, conexión MCP
+y patrones de contenido sensible. Es una barrera adicional, no garantía de
+ausencia de datos sensibles. `empaquetar.sh` produce cinco zips reproducibles
+y `dist/SHA256SUMS`. Publicar una Release exige un tag `vX.Y.Z` que coincida
+con los manifiestos. No confundir estas pruebas con validación de consultas
+de negocio ni con autenticación real en todos los clientes.
+
+Antes de publicar, completa los [casos de comportamiento](pruebas/casos-skills.md)
+y las pruebas de clientes que correspondan. Instrucciones para colaboradores
+en [AGENTS.md](AGENTS.md).
 
 ## Soporte
 

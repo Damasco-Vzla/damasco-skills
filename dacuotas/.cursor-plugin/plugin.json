@@ -1,7 +1,7 @@
 {
   "name": "dacuotas",
   "displayName": "Da+Cuotas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Skills y conexión al MCP del DWH de Da+Cuotas. Sólo lectura.",
   "author": { "name": "Corporación Damasco, Tecnología" },
   "license": "LicenseRef-Propietaria",

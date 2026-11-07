@@ -15,7 +15,11 @@ Global, para todos los proyectos: `~/.cursor/mcp.json`.
 ```
 
 Si el fichero ya existe, añade la entrada dentro de `mcpServers` sin borrar las
-demás. `instalar.sh` hace esa mezcla y deja una copia `.bak`.
+demás. `instalar.sh` hace esa mezcla, conserva las opciones existentes y deja
+una copia `.bak.*` única cuando necesita modificar el archivo.
+Si `dwh-dacuotas` ya tiene otra URL o usa un transporte incompatible, conserva
+la entrada intacta y avisa. Revisa esa conexión antes de cambiarla manualmente;
+no copies credenciales ni headers de otro servidor.
 
 Después: Cursor, Settings, MCP. El servidor sale pendiente de autenticar; al
 pulsar se abre el inicio de sesión. Al volver debe salir en verde con la lista
@@ -25,6 +29,8 @@ de herramientas.
 
 Cursor lee las skills de `~/.agents/skills/` (las mismas que usa Codex).
 `instalar.sh` copia ahí las cinco skills de `dacuotas/skills/`.
+Las instalaciones anteriores se conservan en `.damasco-backups`, dentro del
+mismo directorio, por si necesitas recuperar un cambio local.
 
 ## Alternativas
 
