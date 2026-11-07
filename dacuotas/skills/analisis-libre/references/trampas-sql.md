@@ -11,22 +11,29 @@ con `J-`. Un JOIN directo devuelve 0 filas sin error.
 
 ```sql
 ON regexp_replace(a.cedula, '[^0-9]', '') = regexp_replace(b.cedula_con_prefijo, '[^0-9]', '')
-WHERE b.cedula_con_prefijo LIKE 'V-%' OR b.cedula_con_prefijo LIKE 'E-%'
+WHERE (b.cedula_con_prefijo LIKE 'V-%' OR b.cedula_con_prefijo LIKE 'E-%')
 ```
 
-El filtro de prefijo no es opcional: el número de un RIF puede coincidir con
-la cédula de otra persona. Los cruces por cédula son parciales: di siempre qué
-parte de la cartera casó.
+Este fragmento es un patrón, no SQL ejecutable sin diccionario. Encierra el
+filtro V/E entre paréntesis si añades otras condiciones con AND. Excluir J no
+basta para probar identidad: conserva y verifica el tipo V/E cuando exista,
+rechaza claves vacías y comprueba duplicados en ambos lados antes del JOIN.
+Si falta el tipo, informa la incertidumbre, no certifiques una unión por dígitos.
+Los cruces son parciales: indica cuántas claves casaron y cuántas no, sin PII.
 
 ## Zona horaria
 
-Las marcas de tiempo vienen en UTC. Para «el día» en Venezuela:
+Verifica tipo y zona en `describir_datos`; no toda columna es un timestamp UTC.
+Para texto ISO-8601 con zona, «el día» en Venezuela puede calcularse así:
 
 ```sql
 DATE(at_timezone(from_iso8601_timestamp(creado_en), 'America/Caracas'))
 ```
 
 Un día contado en UTC mueve cuatro horas de un día al siguiente.
+No apliques `from_iso8601_timestamp` a una columna que ya es timestamp ni
+conviertas una fecha contable DATE. Usa intervalos de inicio incluido y fin
+excluido para timestamps, respetando el contrato de cada herramienta.
 
 ## Partición técnica de carga
 
@@ -43,8 +50,10 @@ enteras se comparan sin comillas; con comillas dan `TYPE_MISMATCH`.
 
 ## 504
 
-La consulta tardó demasiado o escaneó demasiado. Acota el período, agrupa menos
-fino o parte el cálculo en dos. No reintentes la misma consulta.
+No hay resultado terminado. Si la respuesta explica cómo recuperar o reutilizar
+una ejecución en curso, respeta ese mecanismo y su espera sin lanzar trabajos
+duplicados. Si no, acota período o granularidad. No repitas a ciegas ni presentes
+una estimación como resultado. Tras dos fallos, cambia el plan o declara el límite.
 
 ## Mezcla de sociedades
 
@@ -60,7 +69,17 @@ documento. `avisos_sql` avisa si filtras por la segunda.
 
 En SAP el importe de línea viene en moneda local y en moneda de sistema. La
 columna de moneda del documento no cambia en qué moneda está el importe. No
-apliques tasas propias sin decirlo: el resultado sería un `escenario`.
+supongas el código de moneda; confírmalo. No apliques tasas propias salvo que
+el usuario lo pida: el resultado sería un `escenario`, con tasa, fecha,
+fuente y sentido de conversión.
+
+## Granularidad y resultados incompletos
+
+Un JOIN de cabeceras con líneas o pagos puede multiplicar saldos. Define qué
+representa cada fila, prueba unicidad y agrega el lado múltiple antes de unir.
+No arregles multiplicaciones con DISTINCT sobre importes. No sumes páginas
+truncadas como un total. Distingue cero observado, NULL, sin filas y fallo;
+un ratio con denominador cero es no calculable, no 0 %.
 
 ## Fuentes que no se suman
 
@@ -68,6 +87,10 @@ apliques tasas propias sin decirlo: el resultado sería un `escenario`.
 - Cupo de la app no es cartera de Mambu.
 - Pedidos de la app no son desembolsos.
 - La financiera externa no es cartera propia.
+
+Para Cashea, verifica si el dato solicitado es histórico disponible o depende
+del Excel externo vigente. Tablas en el catálogo no garantizan carga actual.
+No inventes un corte; si falta el archivo autorizado, declara esa dependencia.
 
 ## Períodos con carga atípica
 

@@ -15,12 +15,20 @@ de sesión del cliente.
 
 ## Entra pero no responde lo que pido
 
-- «No está en el catálogo»: tu rol no ve esa métrica. Los permisos son por
-  área; los cambia TI con autorización del área.
+- «No está en el catálogo»: comprueba si vino completo o recortado. Una métrica
+  ausente no prueba falta de acceso, y el catálogo de métricas no enumera todos
+  los objetos que puede describir `describir_datos`.
+- El catálogo anuncia una herramienta pero el cliente no la muestra: comprueba
+  conexión, actualización y esquema expuesto. No inventes una llamada ni
+  concluyas que falta permiso sin evidencia. Usa sólo una alternativa disponible
+  y autorizada que cubra el mismo alcance, indicando las diferencias.
+- 403 o denegación explícita: detente. Los permisos los cambia TI con
+  autorización del área; no los rodees con SQL ni otra conexión.
 - 504: la consulta es demasiado grande. Acota el período o agrupa más.
 - Responde con 0 filas: lee la `nota` de la respuesta antes de concluir que no
   hay datos.
-- Cifra rara: mira `corte_datos`; puede ser una copia de hace horas.
+- Cifra rara: revisa el corte de esa fuente/objeto, no sólo `corte_datos`, y la
+  cobertura de negocio. Una copia de hoy puede contener sólo historia antigua.
 
 ## Las skills no aparecen
 

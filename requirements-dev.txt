@@ -1,0 +1,2 @@
+# Sólo validación y pruebas; el instalador usa la biblioteca estándar.
+PyYAML==6.0.3

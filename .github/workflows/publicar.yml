@@ -19,6 +19,21 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: "22"
+      - name: Dependencias y pruebas de regresión
+        run: |
+          python3 -m pip install -r requirements-dev.txt
+          python3 -m unittest discover -s tests -v
+      - name: Versión de la Release
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          version = json.loads(Path('dacuotas/plugin.json').read_text())['version']
+          if os.environ['RELEASE_TAG'] != f'v{version}':
+              raise SystemExit('El tag debe coincidir con la versión del plugin: v' + version)
+          PY
       - name: Validar
         env:
           PALABRAS_PROHIBIDAS: ${{ secrets.PALABRAS_PROHIBIDAS }}
@@ -30,6 +45,7 @@ jobs:
       - name: Zips a la Release
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           bash empaquetar.sh
-          gh release upload "${{ github.event.release.tag_name }}" dist/*.zip --clobber
+          gh release upload "$RELEASE_TAG" dist/*.zip dist/SHA256SUMS --clobber

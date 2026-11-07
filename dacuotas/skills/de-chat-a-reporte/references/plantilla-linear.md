@@ -1,6 +1,7 @@
 # Plantilla de ticket para Linear
 
-Copia el bloque y rellena cada campo. Lo que no se sepa queda como pregunta.
+Copia el bloque y rellena cada campo. Lo que no se sepa queda pendiente.
+Es un borrador sin datos personales ni secretos; no crea ni programa nada.
 
 ```markdown
 ## Título
@@ -13,12 +14,13 @@ Qué decisión se toma con este reporte y quién la toma.
 
 ## Fuente(s) y herramienta del MCP
 
-Herramienta y parámetros con que se calculó en el chat (por ejemplo
+Herramienta disponible y parámetros no sensibles con que se calculó en el chat (por ejemplo
 `analisis_vigente` con `cartera_diaria`, o `compras_app` con `agrupar_por`).
 
 ## Métrica y definición
 
-Qué se cuenta o se suma, y qué queda fuera.
+Qué se cuenta o se suma, clave/granularidad, numerador y denominador de ratios,
+tratamiento de duplicados y qué queda fuera.
 
 ## Período y frecuencia
 
@@ -27,11 +29,13 @@ envío si es programado.
 
 ## Moneda
 
-Moneda local, moneda de sistema o USD. Si hace falta tasa, cuál y de dónde.
+Código de moneda de cada importe, sin asumir que sistema significa USD. Si
+hace falta tasa, valor, fuente, fecha y sentido de conversión; es un escenario.
 
 ## Cortes aceptables
 
-Antigüedad máxima del dato para que el reporte sirva.
+Antigüedad máxima por fuente y qué hacer si falta carga o cobertura, una
+fuente está retrasada o la respuesta está recortada. No enviar ceros ficticios.
 
 ## Perímetro
 
@@ -43,10 +47,11 @@ Tienda, canal, sociedad, producto. Una sociedad de SAP por reporte.
 
 ## Destinatarios
 
-Quién lo recibe y por qué canal.
+Quién lo recibe, por qué canal, nivel de acceso y autorización de envío.
 
 ## Criterio de aceptación
 
-Cómo se sabe que el reporte está bien: cifra de control, cuadre con otra
-pantalla del Backoffice, fecha de prueba.
+Cómo se sabe que el reporte está bien: fórmula, cifra de control y fuente,
+cuadre con Backoffice, fecha de prueba y respuesta ante fallo. Las cifras de
+control de una conversación anterior se etiquetan históricas, no vigentes.
 ```

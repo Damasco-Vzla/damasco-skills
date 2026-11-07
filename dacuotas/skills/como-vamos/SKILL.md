@@ -3,7 +3,7 @@ name: como-vamos
 description: Foto del negocio Da+Cuotas, cómo vamos hoy, cartera, mora, colocación, cobranza, recaudo, call center, cupos, usuarios y compras de la app. Úsala ante «cómo vamos», «resumen», «dame el panorama», «cómo cerró ayer» o cualquier pregunta de seguimiento diario. No para una persona concreta ni para contabilidad de SAP.
 license: Propietaria. Ver LICENSE.md del repositorio.
 metadata:
-  version: '1.0.0'
+  version: '1.0.1'
   repositorio: 'https://github.com/Damasco-Vzla/damasco-skills'
 ---
 
@@ -14,32 +14,44 @@ con el Backoffice, validar siempre con criterio humano.
 
 ## Reglas fijas
 
-1. Cada cifra sale de una llamada hecha en este turno, nunca de memoria ni de un mensaje anterior.
-2. Cita `fuente` y `corte_datos` en cada cifra; no mezcles cortes de copias distintas.
-3. Traslada tal cual `nota`, `aviso`, `sello`, `avisos_sql` y `aviso_volumen`.
-4. Lo que no está en el catálogo (`listar_metricas`) no se responde: declara el límite, nunca un cero.
-5. Toda cifra es de apoyo salvo que el `sello` diga `certificada`.
-6. Datos de personas sólo de la persona por la que se pregunta; nunca listados.
-7. Si el usuario la va a comunicar fuera de su área: «validar con el área dueña y pasar por el Backoffice».
-8. Si la misma pregunta se repite o piden «todos los días», usa la skill `de-chat-a-reporte`.
+1. Cada cifra y corte sale de una llamada hecha en este turno. Una consulta redactada, fallida o sin resultado no es una cifra observada.
+2. Cita `fuente`, el corte de cada fuente/objeto (`corte_fuente`, `cortes` u otros campos devueltos), período, moneda/unidad y filtros. No uses el `corte_datos` principal para SAP u otra copia. Fecha de copia y cobertura de negocio son distintas.
+3. Conserva `nota`, `aviso`, `sello`, `avisos_sql` y `aviso_volumen` cuando vengan; no inventes campos ausentes. No reproduzcas secretos ni datos personales ajenos al caso.
+4. Consulta `listar_metricas` y verifica las herramientas realmente disponibles y su esquema en esta sesión. Catálogo, herramientas expuestas y permisos son distintos: no deduzcas uno del otro. Un catálogo recortado no prueba ausencia; amplía sólo con parámetros reales del esquema o consulta un objeto conocido. Declara límites; nunca los conviertas en cero.
+5. Toda cifra es de apoyo salvo que el servidor marque ese resultado concreto como `certificada`. Una herramienta predefinida no certifica por sí sola.
+6. Datos de personas sólo para el caso concreto y con acceso permitido; nunca listados ni evasión de permisos con SQL, otra fuente o paginación.
+7. Para comunicar fuera del área, validar con el área dueña y pasar por el Backoffice. Las skills no autorizan enviar, publicar, crear tickets ni cambiar datos.
+8. Si la pregunta se repite o piden un envío periódico, propone `de-chat-a-reporte`; no crees ni actives el envío por tu cuenta.
 
 ## Antes de llamar
 
-Si el usuario no fijó objetivo, perímetro (canal, tienda), período y moneda,
-pregúntalo en una sola línea. Traduce «ayer», «esta semana», «el mes pasado» a
-fechas AAAA-MM-DD en hora de Venezuela (UTC-4). «Hoy» para estos datos es el
-día del corte; dilo si no coincide con la fecha real.
+Traduce «hoy», «ayer», «esta semana» y «el mes pasado» desde la fecha real en
+`America/Caracas` (UTC-4), no desde el corte. Explicita las fechas AAAA-MM-DD.
+Si el corte no alcanza el período pedido, señala la cobertura parcial; no
+rebautices la última foto como «hoy» ni un día abierto como cierre completo.
+
+Para «¿cómo vamos?» puedes usar el resumen general al último corte, indicando
+su alcance y moneda sin interrogar al usuario. Pregunta en una sola línea sólo
+lo que cambie la respuesta (por ejemplo, ventas BNPL frente a ventas de SAP).
+Para semanas, declara el inicio elegido; compara períodos de igual duración
+y madurez, o advierte que uno sigue abierto.
 
 ## Pasos
 
-1. `listar_metricas` primero: dice qué puede ver tu rol, qué significa cada
-   cifra y qué no se puede responder.
-2. Seguimiento diario: `analisis_vigente` con `analisis: "cartera_diaria"`. Ya
-   trae resumen, mora por tramo, cobranza, colocación, recaudo, call center,
-   cupos y serie de mora del corte vigente sin volver a escanear. No repitas
-   `cartera`, `mora` o `cobranza` por separado para lo mismo.
+1. `listar_metricas` primero: lee definiciones, unidades y limitaciones. Revisa
+   si hay recorte y contrasta con las herramientas expuestas; no infieras
+   permisos sólo por presencia o ausencia de una métrica.
+2. Si está expuesta y su esquema lo admite, usa `analisis_vigente` con
+   `analisis: "cartera_diaria"`. Lee qué secciones devolvió antes de afirmar
+   que incluye todas las fuentes. No vuelvas a consultar cifras ya devueltas.
+   Si no está disponible en esta sesión, usa `resumen` para crédito y, sólo
+   si aporta al pedido, `resumen_app` o las herramientas por métrica. Aclara
+   qué no cubre ese resumen; no simules el análisis precalculado.
 3. «Qué se movió desde ayer» o desde una respuesta anterior: `cambios_desde`.
-   Para las filas completas de una sección: `detalle_analisis`.
+   Para las filas completas de una sección: `detalle_analisis`, sólo si ambas
+   herramientas están disponibles y con los parámetros de su esquema. Si no,
+   compara consultas nuevas de períodos con cobertura comprobada. Una foto
+   actual no reconstruye la cartera de ayer.
 4. Sólo si el usuario pide un corte o desglose que el análisis no trae, usa la
    herramienta por métrica: `resumen`, `cartera`, `mora`, `cobranza`,
    `recaudo`, `colocacion`, `comisiones`, `ingresos`, `serie`, `embudo`,
@@ -55,18 +67,25 @@ No sumes ni compares como si fueran lo mismo:
 - Cupo de la app con cartera de Mambu.
 - Pedidos de la app con desembolsos del crédito.
 - SAP Productiva con SAP Importadora.
+- Cashea u otra financiera externa con la cartera propia. Que existan tablas
+  históricas no demuestra que esté cargado el dato actual: confirma cobertura
+  y fuente vigente. Si el análisis depende de un Excel externo, solicita el
+  archivo autorizado y su corte; no presentes el histórico como dato actual.
 
-Si el cruce que piden no existe en el catálogo, dilo en vez de aproximarlo.
+Si el cruce no está resuelto por una herramienta, puede evaluarse con
+`analisis-libre` sólo si el diccionario y el acceso lo permiten. No aproximar
+uniones ni confundir dominios para cubrir un dato faltante.
 
 ## Cómo entregas la respuesta
 
 - Titular con la cifra, su fuente y su corte («según la copia de las HH:MM UTC»).
-  Usa `corte_datos` tal cual viene.
+  Usa el corte específico de esa fuente tal cual viene.
 - Tres variaciones relevantes como mucho.
 - Los límites que declaró el servidor (`nota`, `aviso`).
 - La mora es saldo de capital pendiente de los créditos atrasados, no cuota vencida.
 - Sin tablas de más de diez filas; si hay más, resume y ofrece el detalle.
-- Si `filas_recortadas` viene en la respuesta, di que no vino entera y pide un agregado.
+- Si la respuesta indica recorte (`filas_recortadas` u otro aviso), no sumes
+  esas filas como un total: pide un agregado completo a la fuente.
 - Un 504 es una consulta demasiado grande: acota el período o agrupa menos fino.
-- Si la misma foto se pide a diario, remite a `de-chat-a-reporte`: eso es un
-  reporte del Backoffice o un envío programado, no un chat.
+- Si la misma foto se pide a diario, propone `de-chat-a-reporte` sin negar la
+  consulta actual. Crear el reporte o activar el envío requiere autorización.

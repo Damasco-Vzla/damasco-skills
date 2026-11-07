@@ -16,6 +16,10 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: "22"
+      - name: Dependencias de validación
+        run: python3 -m pip install -r requirements-dev.txt
+      - name: Pruebas de regresión sin red
+        run: python3 -m unittest discover -s tests -v
       - name: Manifiestos, frontmatter y contenido sensible
         env:
           PALABRAS_PROHIBIDAS: ${{ secrets.PALABRAS_PROHIBIDAS }}
