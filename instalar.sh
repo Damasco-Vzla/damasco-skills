@@ -54,18 +54,21 @@ echo
 echo "== Claude Code =="
 if command -v claude >/dev/null 2>&1; then
   if claude plugin marketplace list 2>/dev/null | grep -q "damasco"; then
-    hacer claude plugin marketplace update damasco
+    hacer claude plugin marketplace update damasco || FALLO_CLAUDE=1
   else
-    hacer claude plugin marketplace add "$REPO"
+    hacer claude plugin marketplace add "$REPO" || FALLO_CLAUDE=1
   fi
   if claude plugin list 2>/dev/null | grep -q "dacuotas@damasco"; then
-    hacer claude plugin update dacuotas@damasco
+    hacer claude plugin update dacuotas@damasco || FALLO_CLAUDE=1
   else
-    hacer claude plugin install dacuotas@damasco
+    hacer claude plugin install dacuotas@damasco || FALLO_CLAUDE=1
   fi
   if claude mcp list 2>/dev/null | grep -qE "^$NOMBRE:"; then
     echo "  Aviso: ya tienes $NOMBRE dado de alta a mano y el plugin trae el suyo."
     echo "  Para no tenerlo dos veces: claude mcp remove $NOMBRE -s user"
+  fi
+  if [ "${FALLO_CLAUDE:-0}" = 1 ]; then
+    echo "  Algo falló en Claude Code; sigue instalacion/claude.md a mano."
   fi
   echo "  En una sesión de Claude Code: /mcp, $NOMBRE, iniciar sesión."
 else
@@ -127,9 +130,10 @@ if command -v codex >/dev/null 2>&1; then
   if codex mcp list 2>/dev/null | grep -q "$NOMBRE"; then
     echo "  $NOMBRE ya estaba en Codex"
   else
-    hacer codex mcp add "$NOMBRE" --url "$URL_MCP"
+    hacer codex mcp add "$NOMBRE" --url "$URL_MCP" \
+      || echo "  no se pudo añadir en Codex; hazlo a mano (instalacion/chatgpt.md)"
   fi
-  echo "  Para iniciar sesión: codex mcp login $NOMBRE"
+  echo "  Codex abre el inicio de sesión al añadirlo; si no, codex mcp login $NOMBRE"
 else
   echo "  no hay 'codex' en el PATH; se omite"
 fi
