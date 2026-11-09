@@ -16,7 +16,7 @@ El MCP es para explorar una vez. Lo que se repite va al Backoffice.
 1. Cada cifra sale de una llamada hecha en este turno, nunca de memoria ni de un mensaje anterior.
 2. Cita `fuente` y `corte_datos` en cada cifra; no mezcles cortes de copias distintas.
 3. Traslada tal cual `nota`, `aviso`, `sello`, `avisos_sql` y `aviso_volumen`.
-4. Lo que no está en el catálogo (`listar_metricas`) no se responde: declara el límite, nunca un cero.
+4. Lo que no está en el catálogo (`listar_metricas`) no se responde: declara el límite, nunca un cero. Si una herramienta que pide esta guía no está en tu lista o el MCP responde «herramienta desconocida», tu rol no la tiene: no la reintentes, trabaja con las que tengas y di al usuario en una línea cuál le falta para pedirla a TI.
 5. Toda cifra es de apoyo salvo que el `sello` diga `certificada`.
 6. Datos de personas sólo de la persona por la que se pregunta; nunca listados.
 7. Si el usuario la va a comunicar fuera de su área: «validar con el área dueña y pasar por el Backoffice».

@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "dacuotas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Skills y conexión al MCP del DWH de Da+Cuotas: crédito, app, compras, call center y contabilidad de SAP. Sólo lectura, cada cifra con fuente y corte.",
   "author": { "name": "Corporación Damasco, Tecnología" },
   "license": "LicenseRef-Propietaria",
