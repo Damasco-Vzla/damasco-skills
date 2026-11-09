@@ -3,6 +3,16 @@
 Formato: versión del paquete, fecha, versión de la política de gobernanza del
 MCP que cumple, qué cambió y qué se probó.
 
+## 1.0.1 (2026-11-09)
+
+Gobernanza del MCP: v0.4. Servidor MCP v1.0.19.
+
+- Regla 4 de las cinco skills: si una herramienta no está en la lista del rol
+  (o el MCP responde «herramienta desconocida»), no reintentar, trabajar con
+  las que haya y decir al usuario cuál le falta para pedirla a TI.
+- El servidor permite `listar_metricas` a todo rol y, al conectar, avisa del
+  repositorio de skills con la forma de cargarlas según el cliente.
+
 ## 1.0.0 (2026-11-07)
 
 Gobernanza del MCP: v0.4.
