@@ -1,5 +1,8 @@
 # ChatGPT y Codex
 
+> ¿ChatGPT Business o Enterprise y gente no técnica? Mejor que el admin
+> instale el plugin para todo el espacio: [chatgpt-empresa.md](chatgpt-empresa.md).
+
 El servidor registra el cliente solo: no hay client id ni secreto que copiar.
 
 ## ChatGPT web (modo desarrollador)

@@ -17,3 +17,11 @@ for d in */; do
   zip -qr "../../dist/$s.zip" "$s" -x "$s/agents/*" -x "*.DS_Store"
   echo "dist/$s.zip"
 done
+
+# Plugin completo para ChatGPT (Business/Enterprise): plugin.json, mcp.json y
+# skills/ en la raíz del zip. Lo sube un admin en Admin console, Plugins, Add,
+# Upload plugin (instalacion/chatgpt-empresa.md). Sin los manifiestos de Claude
+# ni de Cursor, que ChatGPT no usa.
+cd "$AQUI/dacuotas"
+zip -qr "$AQUI/dist/dacuotas-chatgpt.zip" plugin.json mcp.json skills -x "*.DS_Store"
+echo "dist/dacuotas-chatgpt.zip"
