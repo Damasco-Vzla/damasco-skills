@@ -37,6 +37,7 @@ Por cliente, a mano:
 | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
 | Claude Code                        | `claude plugin marketplace add Damasco-Vzla/damasco-skills` y `claude plugin install dacuotas@damasco`                                                | [claude.md](instalacion/claude.md)   |
 | claude.ai (web, escritorio, móvil) | Conector de la organización (pide a TI el dato para claude.ai) y zips de la [Release](https://github.com/Damasco-Vzla/damasco-skills/releases/latest) | [claude.md](instalacion/claude.md)   |
+| ChatGPT de Damasco (empresa)       | Ya instalado: `@Cuotas`, preguntar, Conectar e iniciar sesión la primera vez | [chatgpt.md](instalacion/chatgpt.md) |
 | ChatGPT web                        | Modo desarrollador, `chatgpt.com/plugins`, servidor MCP con OAuth                                                                                     | [chatgpt.md](instalacion/chatgpt.md) |
 | Codex CLI                          | `codex mcp add dwh-dacuotas --url https://mambu-mirror.aplicacionesdamasco.com/mcp` y `codex mcp login dwh-dacuotas`                                  | [chatgpt.md](instalacion/chatgpt.md) |
 | Cursor                             | Servidor en `~/.cursor/mcp.json` y skills en `~/.agents/skills/`                                                                                      | [cursor.md](instalacion/cursor.md)   |
