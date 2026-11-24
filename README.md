@@ -63,6 +63,7 @@ Por cliente, a mano:
 | `analisis-libre`    | Cruces y cálculos con SQL cuando no hay herramienta              |
 | `finanzas-sap`      | Mayor, balance, resultado por rubro, CxC, CxP, trazar documentos |
 | `de-chat-a-reporte` | Convertir una pregunta repetida en un reporte del Backoffice     |
+| `ajustar-linea-mambu` | CSV de cédula, nivel y monto contra Mambu producción. No usa el MCP. Codex de escritorio, dry run primero |
 
 ## Buenas preguntas
 

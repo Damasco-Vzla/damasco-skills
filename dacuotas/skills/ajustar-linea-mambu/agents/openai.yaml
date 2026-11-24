@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ajustar línea Mambu"
+  short_description: "Aplica en Mambu producción un CSV de cédula, nivel y monto. Primero dry run."
+  default_prompt: "Usa ajustar-linea-mambu con este CSV. Empieza por el dry run y no escribas hasta que yo diga ejecutar."

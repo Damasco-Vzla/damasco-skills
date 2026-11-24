@@ -3,6 +3,12 @@
 Formato: versión del paquete, fecha, versión de la política de gobernanza del
 MCP que cumple, qué cambió y qué se probó.
 
+## 1.0.2 (2026-11-24)
+
+- Skill `ajustar-linea-mambu` para Codex de escritorio: aplica un CSV de
+  cédula, nivel y monto en Mambu producción, con dry run previo. No usa el
+  MCP de solo lectura. ChatGPT en el navegador no puede abrir el túnel.
+
 ## 1.0.1 (2026-11-09)
 
 Gobernanza del MCP: v0.4. Servidor MCP v1.0.19.
